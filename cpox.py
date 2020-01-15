@@ -176,12 +176,6 @@ for n in range(NReactors):
             data = diagrams[i].get_data()
             split_data = data.split("\n")
 
-            # sanity check, delete later
-            # todo: delete this later
-            if n == 1000:
-                print('element: ', element)
-                print(data)
-
             for line in split_data[2:]:  # skip the first 2 lines
                 if len(line.split()) == 0:  # skip the empty line at the end
                     continue
@@ -207,39 +201,6 @@ for n in range(NReactors):
                 if (flux_pair or flux_pair[::-1]) in list(temp_data.keys()):
                     continue
                 temp_data[flux_pair] += net
-
-        locations_of_interest = [1000, 1200, 1400, 1600, 1800, 1999]
-        for l in locations_of_interest:
-            if n == l:
-                location = str(int(n / 100))
-
-                diagram = ct.ReactionPathDiagram(surf, 'X')
-                diagram.title = 'rxn path'
-                diagram.label_threshold = 1e-9
-                dot_file = out_dir + '/rxnpath-' + str(ratio) + '-x-' + location + 'mm.dot'
-                img_file = out_dir + '/rxnpath-' + str(ratio) + '-x-' + location + 'mm.png'
-                img_path = os.path.join(out_dir, img_file)
-                diagram.write_dot(dot_file)
-                os.system('dot {0} -Tpng -o{1} -Gdpi=200'.format(dot_file, img_file))
-
-                for element in elements:
-                    diagram = ct.ReactionPathDiagram(surf, element)
-                    diagram.title = element + 'rxn path'
-                    diagram.label_threshold = 1e-9
-                    dot_file = out_dir + '/rxnpath-' + str(ratio) + '-surf-' + location + 'mm-' + element + '.dot'
-                    img_file = out_dir + '/rxnpath-' + str(ratio) + '-surf-' + location + 'mm-' + element + '.png'
-                    img_path = os.path.join(out_dir, img_file)
-                    diagram.write_dot(dot_file)
-                    os.system('dot {0} -Tpng -o{1} -Gdpi=200'.format(dot_file, img_file))
-
-                    diagram = ct.ReactionPathDiagram(gas, element)
-                    diagram.title = element + 'rxn path'
-                    diagram.label_threshold = 1e-9
-                    dot_file = out_dir + '/rxnpath-' + str(ratio) + '-gas-' + location + 'mm-' + element + '.dot'
-                    img_file = out_dir + '/rxnpath-' + str(ratio) + '-gas-' + location + 'mm-' + element + '.png'
-                    img_path = os.path.join(out_dir, img_file)
-                    diagram.write_dot(dot_file)
-                    os.system('dot {0} -Tpng -o{1} -Gdpi=200'.format(dot_file, img_file))
 
     # adding the temp data to the real dictionary
     integration_flux_data = Counter(integration_flux_data) + Counter(temp_data)
