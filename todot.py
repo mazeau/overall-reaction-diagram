@@ -39,8 +39,10 @@ for x in data:  # writing the node connections
     if net < threshold:  # don't include the paths that are below the threshold
         continue
     label = net / largest_rate
+    rounded_label = '{:0.3e}'.format(label)
+
     pen_width = ((net - smallest_rate) / (largest_rate - smallest_rate)) * 4 + 2
-    str_to_add = species_dict[s1] + ' -> ' + species_dict[s2] + '[fontname="Helvetica", penwidth=' + str(pen_width) + ', arrowsize=' + str(pen_width / 2) + ', label=" ' + str(label) + '"];'
+    str_to_add = species_dict[s1] + ' -> ' + species_dict[s2] + '[fontname="Helvetica", penwidth=' + str(pen_width) + ', arrowsize=' + str(pen_width / 2) + ', label=" ' + str(rounded_label) + '"];'
     list_of_strings.append(str(str_to_add))
 
     if s1 not in list(added_species.keys()):
